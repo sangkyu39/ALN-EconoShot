@@ -5,34 +5,49 @@ import os
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 import dart_fss as dart
+import json
+import time
 
 router = APIRouter()
 
 # .env 파일에서 환경 변수 로드
 load_dotenv()
 
+# 상장 기업 데이터 파일 경로
+COMPANY_FILE = "korean_companies.json"
+
 # DART API 키 설정
 dart_api_key = os.getenv('DART_API_KEY')
 dart.set_api_key(dart_api_key)
 
-def load_korean_companies():
+# 상장 기업 목록 로드 및 저장 함수
+def save_korean_companies():
     try:
-        # DART API 키 설정
-        api_key = os.getenv("DART_API_KEY")
-        dart.set_api_key(api_key)
-        
-        # 전체 기업 목록 가져오기
         corp_list = dart.get_corp_list()
-        
-        # 상장 기업 필터링
-        listed_corps = [corp.info["corp_name"] for corp in corp_list if corp.info.get("stock_code")]
-        
-        print(f"총 {len(listed_corps)}개의 상장 기업을 로드했습니다.")
-        return set(listed_corps)
+        listed_companies = [
+            {"corp_name": corp.info["corp_name"], "stock_code": corp.info["stock_code"]}
+            for corp in corp_list
+            if corp.info.get("stock_code")
+        ]
+        with open(COMPANY_FILE, "w", encoding="utf-8") as file:
+            json.dump(listed_companies, file, ensure_ascii=False, indent=4)
+        print(f"{len(listed_companies)}개의 상장 기업 정보를 저장했습니다.")
     except Exception as e:
-        print(f"한국 상장 기업 목록 로드 실패: {e}")
+        print(f"상장 기업 목록 저장 실패: {e}")
+
+# 저장된 상장 기업 목록 읽기
+def load_korean_companies():
+    if not os.path.exists(COMPANY_FILE):
+        print("상장 기업 데이터 파일이 없습니다. 데이터를 새로 저장합니다.")
+        save_korean_companies()
+    try:
+        with open(COMPANY_FILE, "r", encoding="utf-8") as file:
+            companies = json.load(file)
+            return {company["corp_name"] for company in companies}
+    except Exception as e:
+        print(f"상장 기업 목록 로드 실패: {e}")
         return set()
-    
+
 # 뉴스 수집 함수 (Bing News API)
 def fetch_news_from_bing(query):
     api_key = os.getenv('BING_API_KEY')
@@ -44,7 +59,7 @@ def fetch_news_from_bing(query):
     params = {
         'q': f"{query}",
         'mkt': 'en-US',
-        'count': 5,
+        'count': 10,
     }
     headers = {
         'Ocp-Apim-Subscription-Key': api_key,
@@ -140,7 +155,7 @@ def process_news_data(news_data, company_list):
 
 # 뉴스 데이터 가져오기 엔드포인트
 @router.get("/")
-async def get_news(query: str = "경제"):
+async def get_news(query: str = "economy"):
     korean_companies = load_korean_companies()
 
     bing_news_data = fetch_news_from_bing(query)
