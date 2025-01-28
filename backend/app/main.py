@@ -1,6 +1,9 @@
+# main.py
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import news, sentiment
+from app.routers import news  # news.py의 router를 가져옴
+
 
 app = FastAPI()
 
@@ -14,9 +17,7 @@ app.add_middleware(
 )
 
 # 라우터 등록
-app.include_router(news.router, prefix="/news", tags=["news"])
-app.include_router(sentiment.router, prefix="/sentiment", tags=["sentiment"])
-
+app.include_router(news.router, prefix="/news", tags=["news"])  # router로 등록
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Sentiment Analysis API"}
