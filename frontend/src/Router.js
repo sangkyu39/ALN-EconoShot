@@ -2,12 +2,16 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import News from "./routes/news.js";
+import NewsRoute from "./routes/NewsRoute.js";
 
 function Routing() {
 	return (
 		<div className="container">
-			<News />
+			<Router>
+				<Routes>
+					<Route path="*" element={<NewsRoute />} />
+				</Routes>
+			</Router>
 		</div>
 	);
 }
