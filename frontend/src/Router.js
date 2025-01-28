@@ -7,7 +7,6 @@ import News from "./routes/news.js";
 function Routing() {
 	return (
 		<div className="container">
-			<p>123</p>
 			<News />
 		</div>
 	);
