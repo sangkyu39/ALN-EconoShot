@@ -59,7 +59,7 @@ def fetch_news_from_bing(query):
     params = {
         'q': f"{query}",
         'mkt': 'en-US',
-        'count': 10,
+        'count': 2,
     }
     headers = {
         'Ocp-Apim-Subscription-Key': api_key,
@@ -90,7 +90,7 @@ def fetch_news_from_naver(query):
 
     params = {
         'query': f"{query} 경제 금융",
-        'display': 10,
+        'display': 4,
         'start': 1,
         'sort': 'sim',
     }
