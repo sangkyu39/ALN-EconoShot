@@ -22,7 +22,7 @@ dart.set_api_key(dart_api_key)
 
 # 상장 기업 목록 로드 및 저장 함수
 def save_korean_companies():
-    try:
+    try: 
         corp_list = dart.get_corp_list()
         listed_companies = [
             {"corp_name": corp.info["corp_name"], "stock_code": corp.info["stock_code"]}
