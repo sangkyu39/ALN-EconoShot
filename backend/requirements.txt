@@ -1,5 +1,11 @@
-beautifulsoup4==4.12.3
-fastapi==0.115.7
-nltk==3.9.1
-requests==2.32.3
-uvicorn==0.34.0
+fastapi
+uvicorn
+requests
+beautifulsoup4
+python-dotenv
+transformers
+torch
+dart-fss
+yfinance
+pydantic
+sqlite3  # (일반적으로 표준 라이브러리)

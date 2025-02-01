@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 def fetch_news_from_bing(query: str):
     endpoint = "https://api.bing.microsoft.com/v7.0/news/search"
-    params = {"q": query, "mkt": "en-US", "count": 2}
+    params = {"q": query, "mkt": "en-US", "count": 3}
     headers = {"Ocp-Apim-Subscription-Key": BING_API_KEY}
     try:
         response = requests.get(endpoint, headers=headers, params=params, timeout=10)
@@ -44,8 +44,8 @@ def fetch_news_from_naver(query: str):
         "X-Naver-Client-Secret": NAVER_CLIENT_SECRET
     }
     params = {
-        "query": f"{query} 경제 금융",
-        "display": 4,
+        "query": f"{query} 산업 주가 증권",
+        "display": 7,
         "start": 1,
         "sort": "sim"
     }
@@ -90,9 +90,9 @@ def fetch_latest_news(query: str = "경제"):
     [API 1] 최신 기사를 새로 가져와서 분석 & DB 저장
     """
     # (1) 뉴스 가져오기
-    bing_articles = fetch_news_from_bing(query)
+    # bing_articles = fetch_news_from_bing(query)
     naver_articles = fetch_news_from_naver(query)
-    all_articles = bing_articles + naver_articles
+    all_articles = naver_articles
 
     # (2) DB 연결
     conn = get_db()
