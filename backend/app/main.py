@@ -1,23 +1,21 @@
-# main.py
-
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from app.routers import news  # news.py의 router를 가져옴
+from .database import create_tables
+from .routers import news_router, companies_router
 
+def create_app() -> FastAPI:
+    app = FastAPI()
 
-app = FastAPI()
+    @app.on_event("startup")
+    def on_startup():
+        create_tables()
 
-# CORS 설정
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # React 개발 서버 주소
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+    app.include_router(companies_router.router, prefix="/companies", tags=["companies"])
+    app.include_router(news_router.router, prefix="/news", tags=["news"])
 
-# 라우터 등록
-app.include_router(news.router, prefix="/news", tags=["news"])  # router로 등록
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to the Sentiment Analysis API"}
+    @app.get("/")
+    def root():
+        return {"message": "Hello World"}
+
+    return app
+
+app = create_app()
