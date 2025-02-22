@@ -8,12 +8,12 @@ INDUSTRY_CANDIDATES = [
 
 def extract_industries(text: str) -> list:
     result = classifier(
-        text[:512],
+        text[:256],
         candidate_labels=INDUSTRY_CANDIDATES,
         multi_label=True
     )
     industries = []
     for label, score in zip(result["labels"], result["scores"]):
-        if score > 0.2:
+        if score > 0.5:
             industries.append(label)
     return industries

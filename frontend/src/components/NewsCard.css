@@ -84,3 +84,23 @@
 	border-radius: 4px;
 	font-size: 1em;
 }
+
+.industry-tag {
+	background-color: #e0e0e0;
+	color: #333;
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-size: 0.7em;
+}
+
+
+.companyDiv {
+	margin-bottom: 10px;
+}
+
+.industryDic {
+	margin-top: 10px;
+}
+.marginL {
+	margin-left: 10px;
+}

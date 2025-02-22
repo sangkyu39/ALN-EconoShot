@@ -88,3 +88,50 @@ body {
 		grid-template-columns: 1fr;
 	}
 }
+
+/* 뉴스 헤더 전체 스타일: 타이틀은 좌측, 검색창은 우측에 위치 */
+.news-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20px;
+  }
+  
+  /* 검색창 컨테이너 */
+  .search-container {
+	display: flex;
+	align-items: center;
+  }
+  
+  /* 검색 입력창 스타일 */
+  .search-container input[type="text"] {
+	border: 1px solid #ccc;
+	border-right: none;
+	border-radius: 4px 0 0 4px;
+	padding: 8px 12px;
+	font-size: 1rem;
+	outline: none;
+	transition: border-color 0.3s ease;
+  }
+  
+  .search-container input[type="text"]:focus {
+	border-color: #007bff;
+  }
+  
+  /* 검색 버튼 스타일 */
+  .search-container button {
+	border: 1px solid #007bff;
+	border-left: none;
+	background-color: #007bff;
+	color: #fff;
+	padding: 8px 16px;
+	font-size: 1rem;
+	border-radius: 0 4px 4px 0;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+  }
+  
+  .search-container button:hover {
+	background-color: #0056b3;
+  }
+  

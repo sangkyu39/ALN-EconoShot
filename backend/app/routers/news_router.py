@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 def fetch_news_from_bing(query: str):
     endpoint = "https://api.bing.microsoft.com/v7.0/news/search"
-    params = {"q": query, "mkt": "en-US", "count": 3}
+    params = {"q": query, "mkt": "en-US", "count": 2}
     headers = {"Ocp-Apim-Subscription-Key": BING_API_KEY}
     try:
         response = requests.get(endpoint, headers=headers, params=params, timeout=10)
@@ -45,7 +45,7 @@ def fetch_news_from_naver(query: str):
     }
     params = {
         "query": f"{query} 산업 주가 증권",
-        "display": 7,
+        "display": 4,
         "start": 1,
         "sort": "sim"
     }
@@ -93,14 +93,14 @@ def fetch_latest_news(query: str = "경제"):
     # bing_articles = fetch_news_from_bing(query)
     naver_articles = fetch_news_from_naver(query)
     all_articles = naver_articles
-
+    print("뉴스 가져옴")
     # (2) DB 연결
     conn = get_db()
     cur = conn.cursor()
 
     # (3) 기업명 로드
     company_list = load_company_names()
-
+    print("기업 로드")
     # (4) 분석 후 DB 저장
     processed_data = []
     for article in all_articles:
@@ -110,11 +110,13 @@ def fetch_latest_news(query: str = "경제"):
 
         # 감성분석
         sentiment = analyze_sentiment(summary)
+        print("감정분석")
         # 기업 추출
         found_companies = extract_companies_from_text(summary, company_list)
+        print("기업 추출")
         # 산업 추출
         industries = extract_industries(summary)
-
+        print("산업추출")
         processed_data.append({
             "title": title,
             "link": link,
