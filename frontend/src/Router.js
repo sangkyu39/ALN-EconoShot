@@ -10,8 +10,8 @@ function Routing() {
 		<div className="container">
 			<Router>
 				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/news" element={<NewsRoute />} />
+					<Route path="/home" element={<Home />} />
+					<Route path="/" element={<NewsRoute />} />
 				</Routes>
 			</Router>
 		</div>
